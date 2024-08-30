@@ -1,0 +1,123 @@
+/*
+O código abaixo apresenta a implementação de uma lista linear.
+
+Para esse exemplo, faça:
+- Implemente funções adicionais como buscar(int elemento) para encontrar a posição de um elemento na lista.
+ou 
+- Adicione métodos para inverter a lista, encontrar o máximo/mínimo, ou ordenar a lista.
+*/
+
+#include <stdio.h>
+#define MAX_SIZE 10
+
+int lista[MAX_SIZE];
+int tamanho = 0;
+
+void inserir(int elemento) {
+    if (tamanho < MAX_SIZE) {
+        lista[tamanho++] = elemento;
+    } else {
+        printf("Lista cheia!\n");
+    }
+}
+
+void remover(int index) {
+    if (index < 0 || index >= tamanho) {
+        printf("Índice inválido!\n");
+    } else {
+        for (int i = index; i < tamanho - 1; i++) {
+            lista[i] = lista[i + 1];
+        }
+        tamanho--;
+    }
+}
+
+void imprimir() {
+    printf("Elementos da lista:\n");
+    for (int i = 0; i < tamanho; i++) {
+        printf("%d ", lista[i]);
+    }
+    printf("\n");
+}
+
+int buscar(int elemento) {
+    for(int i = 0; i < tamanho; i++){
+        if(lista[i] == elemento){
+            printf("%d\n", i);
+            return i;
+        }
+    }
+    printf("Elemento não encontrado.\n");
+    return -1;
+}
+
+void ordenar(){
+    int ultimo, temporario, i;
+    for(ultimo = tamanho - 1; ultimo > 0; --ultimo){
+        for(i = 0; i < ultimo; i++){
+            if(lista[i] > lista[i + 1]){
+                int temporario = lista[i];
+                lista[i] = lista[i + 1];
+                lista[i + 1] = temporario;
+            }
+        }
+    }
+}
+
+void inverter(){
+    int i, temporario;
+    for(i = 0; i < tamanho/2; i++){
+        temporario = lista[i];
+        lista[i] = lista[(tamanho - i) - 1];
+        lista[(tamanho - i) - 1] =  temporario;
+    }
+}
+
+int encontrarMaximo(){
+    if(tamanho == 0){
+        printf("A lista está vazia!\n");
+        return -1;
+    }
+    int maximo = lista[0];
+    for(int i = 1; i < tamanho; i++){
+        if(lista[i] > maximo){
+            maximo = lista[i];
+        }
+    }
+    printf("%d\n", maximo);
+    return maximo;
+}
+
+int encontrarMinimo(){
+    if(tamanho == 0){
+        printf("A lista está vazia!\n");
+        return -1;
+    }
+    int minimo = lista[0];
+    for(int i = 1; i < tamanho; i++){
+        if(lista[i] < minimo){
+            minimo = lista[i];
+        }
+    }
+    printf("%d\n", minimo);
+    return minimo;
+}
+
+int main() {
+    inserir(1);
+    inserir(2);
+    inserir(2896);
+    inserir(444);
+    inserir(56);
+    inserir(89785556);
+    inserir(8652);
+    inserir(999);
+    inserir(10000);
+    inserir(0);
+    ordenar();
+    //encontrarMinimo();
+    //encontrarMaximo();
+    //inverter();
+    imprimir();
+    return 0;
+}
