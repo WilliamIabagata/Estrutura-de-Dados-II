@@ -17,7 +17,7 @@ int main() {
         scanf("%d", &vetor[i]);
     }
 
-    for (i = 0; i < n; i++) {
+    for (i = 0; i < n / 2; i++) {
         temp = vetor[i];
         vetor[i] = vetor[(n - i) - 1];
         vetor[(n - i) - 1] = temp;
