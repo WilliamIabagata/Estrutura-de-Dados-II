@@ -1,0 +1,101 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+typedef struct No{
+    int valor;
+    struct No *proximo;
+}No;
+
+typedef struct Fila{
+    No *primeiro;
+    No *ultimo;
+    int tamanho;
+}Fila;
+
+int primeiro(Fila *fila){
+    return fila -> primeiro -> valor;
+}
+
+int quantidade(Fila *fila){
+    return fila -> tamanho;
+}
+
+int vazia(Fila *fila){
+    return (fila -> primeiro == NULL && fila -> ultimo == NULL);//Como em C não existe valores de true e false, ele retorna um  número sendo 0 falso e diferente de 0 verdadeiro
+}
+
+void inicializar(Fila *fila){
+    fila -> primeiro = NULL;
+    fila -> ultimo = NULL;
+    fila -> tamanho = 0;
+}
+
+void enfileirar(Fila *fila, int valor){
+    if(quantidade(fila) >= 0){
+        No *n = malloc(sizeof(No));
+        n -> valor = valor;
+        n -> proximo = NULL;//Facilita a ordem para alocação de um novo elemento seguindo está ordem, o novo elemento aponta para o NULL
+        
+        if(fila -> ultimo == NULL){//???Funciona assim???
+            fila -> primeiro = n;//???Funciona assim???
+        }else{
+            fila -> ultimo -> proximo = n;//O elemento que apontava para o NULL (O último da fila), começa a apontar para o novo elemento
+        }
+        fila -> ultimo = n;//E o ultimo aponta para o novo elemnto
+        fila -> tamanho++;
+        printf("Enfileirado\n");
+    }else{
+        printf("Não foi possível enfileirar\n");
+    }
+}
+
+int desenfileirar(Fila *fila){
+    if(vazia(fila)){
+        printf("A fila está vazia\n");
+        return 0;
+    }else {
+        No *auxiliar = fila -> primeiro;//Guarda em uma variável auxiliar o valor que será retirado da fila
+        fila -> primeiro = auxiliar -> proximo;//O primeiro começa a apontar para para o subsequente do valor que será retirado da fila
+        
+        if(fila -> primeiro == NULL){
+            fila -> ultimo = NULL;
+        }
+        fila -> tamanho--;
+        int valorDesenfileirado = auxiliar -> valor;
+        free(auxiliar);
+        return valorDesenfileirado;
+    }
+}
+
+void limpar(Fila *fila){
+    No *temporario = fila -> primeiro;
+    
+    while(temporario != NULL){
+        if(vazia(fila)){
+            break;
+        }else{
+            desenfileirar(fila);
+        }
+    }
+}
+
+int main(){
+    Fila fila;
+    
+    inicializar(&fila);
+    
+    enfileirar(&fila, 1);
+    enfileirar(&fila, 2);
+    enfileirar(&fila, 3);
+    enfileirar(&fila, 4);
+    
+    printf("\n%d\n", quantidade(&fila));
+    printf("\n%d\n", desenfileirar(&fila));
+    
+    limpar(&fila);
+    printf("\n%d\n", quantidade(&fila));
+    
+    return 0;
+}
+
+
