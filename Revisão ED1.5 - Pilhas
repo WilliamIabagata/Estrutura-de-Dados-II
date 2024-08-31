@@ -1,0 +1,80 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+typedef struct No{
+    int valor;
+    struct No *proximo;
+} No;
+
+typedef struct Pilha{
+    No *topo;
+    int tamanho;
+} Pilha;
+
+void inicializar(Pilha *pilha){
+    pilha -> topo = NULL;
+    pilha -> tamanho = 0;
+}
+
+int vazia(Pilha *pilha){
+    if(pilha -> topo == NULL){//Verifica se a pilha está vazia reconhecendo se em seu topo está armazenado algum elemento
+        printf("A pilha está vazia!\n");
+        return (pilha -> topo == NULL);
+    }else{
+        return 0;
+    }
+    
+}
+
+int topo(Pilha *pilha){
+    return pilha -> topo -> valor;
+}
+
+int tamanho(Pilha *pilha){
+    return pilha -> tamanho;
+}
+
+void empilhar(Pilha *pilha, int valor){
+    if(tamanho(pilha) >= 0){
+        No *n = malloc(sizeof(No));
+        n -> valor = valor;
+        n -> proximo = pilha -> topo;//Fazendo este nó apontar para o anterior, o que era o valor no topo
+        pilha -> topo = n;//Observe que a ordem dessas operações é integral ao funcionemento da pilha, pois caso seja invertido a estrutura se perde 
+        pilha -> tamanho++;
+        printf("Empilhado com sucesso\n");
+    }else{
+        printf("Falha ao empilhar\n");
+    }
+}
+
+int desempilhar(Pilha *pilha){
+    if(vazia(pilha)){
+        return 0;
+    }else{
+        No *auxiliar  = malloc(sizeof(No));
+        auxiliar = pilha -> topo;//Auxiliar recebe o valor que será retirado da pilha, não o perdendo e desfazendo toda a estrutura
+        pilha -> topo = auxiliar -> proximo;
+        pilha -> tamanho--;
+        int valor = auxiliar -> valor;//Armazenamos o valor que será retirado da pilha, para então liberarmos a memória 
+        free(auxiliar);
+        return valor;
+    }
+}
+
+int main(){
+    Pilha pilha;
+    inicializar(&pilha);
+    
+    vazia(&pilha);
+    empilhar(&pilha, 118);
+    empilhar(&pilha, 28953);
+    empilhar(&pilha, 300000);
+    empilhar(&pilha, 700000);
+    empilhar(&pilha, 13000000);
+    
+    printf("%d\n", topo(&pilha));
+    printf("%d\n", desempilhar(&pilha));
+    printf("%d\n", topo(&pilha));
+    
+    return 0;
+}
