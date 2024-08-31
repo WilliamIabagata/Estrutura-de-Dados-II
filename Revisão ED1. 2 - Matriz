@@ -1,0 +1,27 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+int main() {
+    int **matriz, i, j, soma, tamanho = 0;
+    
+    scanf("%d", &tamanho);
+    matriz = (int**)malloc(tamanho * sizeof(int*));
+    
+    for(i = 0; i < tamanho; i++){
+        matriz[i] = (int*)malloc(tamanho * sizeof(int*));
+    }
+    
+    for(i = 0; i < tamanho; i++){
+        for(j = 0; j < tamanho; j++){
+            scanf("%d", &matriz[i][j]);
+            
+            if(i == j){
+                soma += matriz[i][j];
+            }
+        }
+    }
+    
+    printf("A soma dos elementos presentes na diagonal principal é %d\n", soma);
+    
+    return 0;
+}
