@@ -4,7 +4,7 @@
 int main() {
     int **matriz, i, j, soma, tamanho = 0;
     
-    scanf("%d", &tamanho);
+    scanf("%d", &tamanho);//Determina o tamanho da matriz quadrada
     matriz = (int**)malloc(tamanho * sizeof(int*));
     
     for(i = 0; i < tamanho; i++){
@@ -14,7 +14,7 @@ int main() {
     for(i = 0; i < tamanho; i++){
         for(j = 0; j < tamanho; j++){
             scanf("%d", &matriz[i][j]);
-            
+            //Função que soma os elementos da diagonal principal
             if(i == j){
                 soma += matriz[i][j];
             }
