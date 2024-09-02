@@ -1,18 +1,9 @@
-/*
-O código abaixo apresenta a implementação de uma lista linear.
-
-Para esse exemplo, faça:
-- Implemente funções adicionais como buscar(int elemento) para encontrar a posição de um elemento na lista.
-ou 
-- Adicione métodos para inverter a lista, encontrar o máximo/mínimo, ou ordenar a lista.
-*/
-
 #include <stdio.h>
 #define MAX_SIZE 10
 
 int lista[MAX_SIZE];
 int tamanho = 0;
-
+//Função de inserir elementos
 void inserir(int elemento) {
     if (tamanho < MAX_SIZE) {
         lista[tamanho++] = elemento;
@@ -20,7 +11,7 @@ void inserir(int elemento) {
         printf("Lista cheia!\n");
     }
 }
-
+//Função de remover elementos
 void remover(int index) {
     if (index < 0 || index >= tamanho) {
         printf("Índice inválido!\n");
@@ -31,7 +22,7 @@ void remover(int index) {
         tamanho--;
     }
 }
-
+//Imprime todos os elementos na lista
 void imprimir() {
     printf("Elementos da lista:\n");
     for (int i = 0; i < tamanho; i++) {
@@ -39,7 +30,7 @@ void imprimir() {
     }
     printf("\n");
 }
-
+//Busca elementos dentro da lista
 int buscar(int elemento) {
     for(int i = 0; i < tamanho; i++){
         if(lista[i] == elemento){
@@ -50,7 +41,7 @@ int buscar(int elemento) {
     printf("Elemento não encontrado.\n");
     return -1;
 }
-
+//Orndena em ordem crescentes os elementos da lista
 void ordenar(){
     int ultimo, temporario, i;
     for(ultimo = tamanho - 1; ultimo > 0; --ultimo){
@@ -63,7 +54,7 @@ void ordenar(){
         }
     }
 }
-
+//Inverte todos os elementos da lista
 void inverter(){
     int i, temporario;
     for(i = 0; i < tamanho/2; i++){
@@ -72,7 +63,7 @@ void inverter(){
         lista[(tamanho - i) - 1] =  temporario;
     }
 }
-
+//Encontra o maior valor inserido dentro da lista 
 int encontrarMaximo(){
     if(tamanho == 0){
         printf("A lista está vazia!\n");
@@ -87,7 +78,7 @@ int encontrarMaximo(){
     printf("%d\n", maximo);
     return maximo;
 }
-
+//Encontra o menor valor inserido dentro da lista
 int encontrarMinimo(){
     if(tamanho == 0){
         printf("A lista está vazia!\n");
