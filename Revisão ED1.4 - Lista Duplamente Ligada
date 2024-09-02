@@ -1,14 +1,6 @@
-/*
-O código apresenta uma lista duplamente ligada com operações básicas para inserir, deletar e imprimir.
-
-1 - comente o código.
-2 - Modifique a operação de inserção de dados, para que o usuário seja capaz de inserir valores para a lista.
-3 - Faça uma operação de buscar por um valor específico, informado pelo usuário, onde o programa deve apresentar se o valor foi encontrado e, em caso afirmativo, exibir detalhes(vizinhos) do nó correspondente.
-*/
-
 #include <stdio.h>
 #include <stdlib.h>
-
+//Cria a estrutura do Nó
 typedef struct Node {
     int data;
     struct Node* next;
@@ -16,7 +8,7 @@ typedef struct Node {
 } Node;
 
 Node* head = NULL;
-
+//Insere elementos dentro da lista 
 void insertFront() {
     int valor;
     scanf("%d", &valor);
@@ -29,7 +21,7 @@ void insertFront() {
         head->prev = newNode;
     head = newNode;
 }
-
+//Deleta elementos da lista
 void deleteNode(Node* node) {
     if (node == head)
         head = node->next;
@@ -39,7 +31,7 @@ void deleteNode(Node* node) {
         node->prev->next = node->next;
     free(node);
 }
-
+//Imprime toda a lista
 void printList() {
     Node* temp = head;
     while (temp != NULL) {
@@ -48,7 +40,7 @@ void printList() {
     }
     printf("\n");
 }
-
+//Busca valores inseridos na lista
 void buscarValor(int valor){
     Node* temporario = head;
     int encontrar = 0;
