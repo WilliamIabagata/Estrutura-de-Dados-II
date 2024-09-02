@@ -11,25 +11,25 @@ typedef struct Fila{
     No *ultimo;
     int tamanho;
 }Fila;
-
+//Retorna o primeiro elemento da fila
 int primeiro(Fila *fila){
     return fila -> primeiro -> valor;
 }
-
+//Retorna quantos elementos foram inseridos na fila
 int quantidade(Fila *fila){
     return fila -> tamanho;
 }
-
+//Verifica se a fila está vazia
 int vazia(Fila *fila){
     return (fila -> primeiro == NULL && fila -> ultimo == NULL);//Como em C não existe valores de true e false, ele retorna um  número sendo 0 falso e diferente de 0 verdadeiro
 }
-
+//Cria uma fila
 void inicializar(Fila *fila){
     fila -> primeiro = NULL;
     fila -> ultimo = NULL;
     fila -> tamanho = 0;
 }
-
+//Adiciona elementos a fila
 void enfileirar(Fila *fila, int valor){
     if(quantidade(fila) >= 0){
         No *n = malloc(sizeof(No));
@@ -48,7 +48,7 @@ void enfileirar(Fila *fila, int valor){
         printf("Não foi possível enfileirar\n");
     }
 }
-
+//Retira elementos da fila
 int desenfileirar(Fila *fila){
     if(vazia(fila)){
         printf("A fila está vazia\n");
@@ -66,7 +66,7 @@ int desenfileirar(Fila *fila){
         return valorDesenfileirado;
     }
 }
-
+//Esvazia a fila
 void limpar(Fila *fila){
     No *temporario = fila -> primeiro;
     
