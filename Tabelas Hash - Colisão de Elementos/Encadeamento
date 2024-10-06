@@ -1,0 +1,132 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+#define TAMANHO_TABELA 10
+
+// Estrutura de dados do Filme
+typedef struct Filme {
+    int id;
+    char titulo[100];
+    char genero[30];
+    int ano;
+    float nota;
+    struct Filme *proximo; // Apontador para o próximo filme (encadeamento)
+} Filme;
+
+// Função de Hash (distribui com base no ID do filme)
+int funcao_hash(int id) {
+    return id % TAMANHO_TABELA;
+}
+
+// Inicializa a tabela hash (array de ponteiros para Filme)
+void inicializa_tabela(Filme *tabela[]) {
+    for (int i = 0; i < TAMANHO_TABELA; i++) {
+        tabela[i] = NULL;
+    }
+}
+
+// Inserção de um novo filme (com tratamento de colisões por encadeamento)
+void insere_filme(Filme *tabela[], int id, char *titulo, char *genero, int ano, float nota) {
+    int hash = funcao_hash(id);
+    Filme *novo_filme = (Filme *)malloc(sizeof(Filme));
+    novo_filme->id = id;
+    strcpy(novo_filme->titulo, titulo);
+    strcpy(novo_filme->genero, genero);
+    novo_filme->ano = ano;
+    novo_filme->nota = nota;
+    novo_filme->proximo = tabela[hash]; // Insere no início da lista
+    tabela[hash] = novo_filme;
+}
+
+// Busca um filme pelo ID
+Filme *busca_filme(Filme *tabela[], int id) {
+    int hash = funcao_hash(id);
+    Filme *atual = tabela[hash];
+    
+    while (atual != NULL) {
+        if (atual->id == id) {
+            return atual; // Filme encontrado
+        }
+        atual = atual->proximo;
+    }
+    
+    return NULL; // Filme não encontrado
+}
+
+// Remove um filme pelo ID
+void remove_filme(Filme *tabela[], int id) {
+    int hash = funcao_hash(id);
+    Filme *atual = tabela[hash];
+    Filme *anterior = NULL;
+
+    while (atual != NULL && atual->id != id) {
+        anterior = atual;
+        atual = atual->proximo;
+    }
+
+    if (atual == NULL) {
+        printf("Filme não encontrado!\n");
+        return;
+    }
+
+    if (anterior == NULL) {
+        tabela[hash] = atual->proximo; // Remove o primeiro da lista
+    } else {
+        anterior->proximo = atual->proximo; // Remove do meio/fim da lista
+    }
+    free(atual);
+    printf("Filme removido com sucesso!\n");
+}
+
+// Função para imprimir a tabela hash
+void imprime_tabela(Filme *tabela[]) {
+    for (int i = 0; i < TAMANHO_TABELA; i++) {
+        printf("Posição %d:\n", i);
+        Filme *atual = tabela[i];
+        while (atual != NULL) {
+            printf("  ID: %d, Título: %s, Gênero: %s, Ano: %d, Nota: %.1f\n", 
+                atual->id, atual->titulo, atual->genero, atual->ano, atual->nota);
+            atual = atual->proximo;
+        }
+    }
+}
+
+// Função principal
+int main() {
+    Filme *tabela[TAMANHO_TABELA];
+    inicializa_tabela(tabela);
+
+    // Inserindo filmes
+    insere_filme(tabela, 1, "The Godfather", "Drama", 1972, 10.0);
+    insere_filme(tabela, 12, "Gone with the Wind", "Épico", 1939, 8.0);
+    insere_filme(tabela, 23, "Blade Runner", "Ficção Científica", 1982, 5.2);
+    insere_filme(tabela, 35, "AKIRA", "Ficção Científica", 1988, 9.7);
+    insere_filme(tabela, 47, "The Batman", "Ação", 2022, 8.9);
+    insere_filme(tabela, 51, "Ghost in the Shell", "Ficção Científica", 1995, 9.2);
+    insere_filme(tabela, 66, "Spirited Away", "Aventuar", 2001, 9.2);
+    insere_filme(tabela, 72, "The Godfellas", "Drama", 1990, 9.5);
+
+    imprime_tabela(tabela);
+
+    // Buscando filmes
+    Filme *buscado = busca_filme(tabela, 23);
+    if (buscado != NULL) {
+        printf("\nFilme encontrado: %s\n", buscado->titulo);
+    } else {
+        printf("\nFilme não encontrado\n");
+    }
+
+    buscado = busca_filme(tabela, 51);
+    if (buscado != NULL) {
+        printf("Filme encontrado: %s\n", buscado->titulo);
+    } else {
+        printf("Filme não encontrado\n");
+    }
+
+    // Removendo filmes
+    remove_filme(tabela, 12);
+    imprime_tabela(tabela);
+
+    return 0;
+}
