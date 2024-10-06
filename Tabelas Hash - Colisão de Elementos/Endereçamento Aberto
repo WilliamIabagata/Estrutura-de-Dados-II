@@ -94,12 +94,15 @@ int main() {
     inicializa_tabela(tabela);
 
     // Inserindo filmes
-    insere_filme(tabela, 1, "O Poderoso Chefão", "Crime", 1972, 9.2);
-    insere_filme(tabela, 12, "Clube da Luta", "Drama", 1999, 8.8);
-    insere_filme(tabela, 23, "Inception", "Ficção Científica", 2010, 8.7);
-    insere_filme(tabela, 35, "Matrix", "Ficção Científica", 1999, 8.7);
-    insere_filme(tabela, 47, "Interestelar", "Ficção Científica", 2014, 8.6);
-    insere_filme(tabela, 51, "Parasita", "Drama", 2019, 8.6);
+    insere_filme(tabela, 1, "The Godfather", "Drama", 1972, 10.0);
+    insere_filme(tabela, 12, "Gone with the Wind", "Épico", 1939, 8.0);
+    insere_filme(tabela, 23, "Blade Runner", "Ficção Científica", 1982, 5.2);
+    insere_filme(tabela, 35, "AKIRA", "Ficção Científica", 1988, 9.7);
+    insere_filme(tabela, 47, "The Batman", "Ação", 2022, 8.9);
+    insere_filme(tabela, 51, "Ghost in the Shell", "Ficção Científica", 1995, 9.2);
+    insere_filme(tabela, 66, "Spirited Away", "Aventuar", 2001, 9.2);
+    insere_filme(tabela, 72, "The Godfellas", "Drama", 1990, 9.5);
+
 
     imprime_tabela(tabela);
 
