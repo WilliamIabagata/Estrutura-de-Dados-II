@@ -1,0 +1,126 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+#define TAMANHO_TABELA 10
+
+// Estrutura de dados do Filme
+typedef struct Filme {
+    int id;
+    char titulo[100];
+    char genero[30];
+    int ano;
+    float nota;
+    int ocupado; // 1 se a posição estiver ocupada, 0 se não
+} Filme;
+
+// Função de Hash (distribui com base no ID do filme)
+int funcao_hash(int id) {
+    return id % TAMANHO_TABELA;
+}
+
+// Inicializa a tabela hash
+void inicializa_tabela(Filme tabela[]) {
+    for (int i = 0; i < TAMANHO_TABELA; i++) {
+        tabela[i].ocupado = 0; // Marca como livre
+    }
+}
+
+// Inserção de um novo filme 
+void insere_filme(Filme tabela[], int id, char *titulo, char *genero, int ano, float nota) {
+    int hash = funcao_hash(id);
+    
+    while (tabela[hash].ocupado) {
+        hash = (hash + 1) % TAMANHO_TABELA; // Endereçamento Aberto
+    }
+
+    tabela[hash].id = id;
+    strcpy(tabela[hash].titulo, titulo);
+    strcpy(tabela[hash].genero, genero);
+    tabela[hash].ano = ano;
+    tabela[hash].nota = nota;
+    tabela[hash].ocupado = 1; // Marca como ocupado
+}
+
+// Busca um filme pelo ID
+Filme *busca_filme(Filme tabela[], int id) {
+    int hash = funcao_hash(id);
+    int original_hash = hash;
+    
+    while (tabela[hash].ocupado) {
+        if (tabela[hash].id == id) {
+            return &tabela[hash]; // Filme encontrado
+        }
+        hash = (hash + 1) % TAMANHO_TABELA;
+        if (hash == original_hash) break; // Evitar loop infinito
+    }
+    
+    return NULL; // Filme não encontrado
+}
+
+// Remove um filme pelo ID (simplesmente marca como livre)
+void remove_filme(Filme tabela[], int id) {
+    int hash = funcao_hash(id);
+    int original_hash = hash;
+    
+    while (tabela[hash].ocupado) {
+        if (tabela[hash].id == id) {
+            tabela[hash].ocupado = 0; // Marca como removido
+            printf("Filme removido com sucesso!\n");
+            return;
+        }
+        hash = (hash + 1) % TAMANHO_TABELA;
+        if (hash == original_hash) break; // Evitar loop infinito
+    }
+    
+    printf("Filme não encontrado!\n");
+}
+
+// Função para imprimir a tabela hash
+void imprime_tabela(Filme tabela[]) {
+    for (int i = 0; i < TAMANHO_TABELA; i++) {
+        if (tabela[i].ocupado) {
+            printf("Posição %d: ID: %d, Título: %s, Gênero: %s, Ano: %d, Nota: %.1f\n", 
+                i, tabela[i].id, tabela[i].titulo, tabela[i].genero, tabela[i].ano, tabela[i].nota);
+        } else {
+            printf("Posição %d: Vazia\n", i);
+        }
+    }
+}
+
+// Função principal
+int main() {
+    Filme tabela[TAMANHO_TABELA];
+    inicializa_tabela(tabela);
+
+    // Inserindo filmes
+    insere_filme(tabela, 1, "O Poderoso Chefão", "Crime", 1972, 9.2);
+    insere_filme(tabela, 12, "Clube da Luta", "Drama", 1999, 8.8);
+    insere_filme(tabela, 23, "Inception", "Ficção Científica", 2010, 8.7);
+    insere_filme(tabela, 35, "Matrix", "Ficção Científica", 1999, 8.7);
+    insere_filme(tabela, 47, "Interestelar", "Ficção Científica", 2014, 8.6);
+    insere_filme(tabela, 51, "Parasita", "Drama", 2019, 8.6);
+
+    imprime_tabela(tabela);
+
+    // Buscando filmes
+    Filme *buscado = busca_filme(tabela, 23);
+    if (buscado != NULL) {
+        printf("\nFilme encontrado: %s\n", buscado->titulo);
+    } else {
+        printf("\nFilme não encontrado\n");
+    }
+
+    buscado = busca_filme(tabela, 51);
+    if (buscado != NULL) {
+        printf("Filme encontrado: %s\n", buscado->titulo);
+    } else {
+        printf("Filme não encontrado\n");
+    }
+
+    // Removendo filmes
+    remove_filme(tabela, 12);
+    imprime_tabela(tabela);
+
+    return 0;
+}
